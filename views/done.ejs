@@ -1,0 +1,36 @@
+<%- include("header") -%>
+
+<div class="box" id="heading">
+  <h1>hello</h1>
+</div>
+<div class="box">
+  <h3>Finished personal list</h3>
+  <% for (i=0;i<a.length;i++){ %>
+  <ul><%= a %></ul>
+  <% } %>
+</div>
+
+<div class="box">
+  <h3>Finished Work list</h3>
+  <% for (i=0;i<a.length;i++){ %>
+  <ul><%= b %></ul>
+  <% } %>
+</div>
+
+<div class="box">
+  <h3>New list</h3>
+  <% for (i=0;i<a.length;i++){ %>
+  <ul><%= d %></ul>
+  <% } %>
+</div>
+
+
+<h3>New list test</h3>
+
+<form class="item" action="/" method="post">
+  <input type="text" name="added">
+  <button type="submit" name="list2" placeholder="new Item" value="<%= c %>">+</button>
+</form>
+
+
+<%- include("footer") -%>

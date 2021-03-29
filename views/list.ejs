@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-
-<head>
-  <meta charset="utf-8">
-  <title>To Do List</title>
-  <link rel="stylesheet" href="css/styles.css">
-</head>
-
+<%- include("header") -%>
 <body>
+
+<a href="/work">Go To Work List</a>
+<a href="/about">Go To Contact</a>
+<a href="/finished">Go To What I have done.</a>
 
   <div class="box" id="heading">
     <h1><%= listTitle %></h1>
@@ -33,4 +29,4 @@
 
 </body>
 
-</html>
+<%- include("footer") -%>
