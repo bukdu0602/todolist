@@ -23,13 +23,13 @@ const itemsSchema = new mongoose.Schema({
 const Item = mongoose.model("Item", itemsSchema);
 // mongoose create
 const item1 = new Item({
-  name: "This is item1.",
+  name: "Welcome to your todolist!",
 });
 const item2 = new Item({
-  name: "This is item2.",
+  name: "Hit the + button to add a new item.",
 });
 const item3 = new Item({
-  name: "This is item3.",
+  name: "<-- Hit this to delete an item.",
 });
 
 const defaultItems = [item1, item2, item3];
@@ -93,6 +93,8 @@ app.post("/", function(req, res) {
 } else {
    List.findOne({name: listName}, function(err, found){
      found.items.push(item4);
+     console.log(found);
+     console.log(found.items);
      found.save();
      res.redirect("/" + listName);
    });
@@ -113,21 +115,39 @@ app.post("/", function(req, res) {
 });
 
 app.post("/delete", function(req, res) {
+  let today = new Date();
+  let options = {
+    weekday: "long",
+    day: "numeric",
+    month: "long"
+  };
+  let day = today.toLocaleDateString("en-US", options);
+
   const checkedItemId = req.body.checkbox;
-  Item.findByIdAndRemove(checkedItemId, function(err) {
-    if (err) {
-      console.log("err");
-    } else {
-      console.log("succesfullly deleted from DB");
-      res.redirect("/");
-    }
-  });
+  const listName = req.body.listName;
+  if(listName === day){
+    Item.findByIdAndRemove(checkedItemId, function(err) {
+      if (err) {
+        console.log("err");
+      } else {
+        console.log("succesfullly deleted from DB");
+        res.redirect("/");
+      }
+    });
+  }else {
+    List.findOneAndUpdate({name: listName}, {$pull: {items: {_id: checkedItemId}}}, function(err, foundList){
+      if (!err) {
+        res.redirect("/"+ listName);
+      }
+    }) ;
+  }
+
 });
 
 app.get("/:parameter", function(req, res) {
-  const customListName = req.params.parameter;
+  const customListName = _.capitalize(req.params.parameter);
 List.findOne({name: customListName}, function(err, found){
-  console.log(found);
+  // console.log(found);
 if (found){
   res.render("list", {
     listTitle: found.name,
